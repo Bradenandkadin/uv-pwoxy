@@ -1,6 +1,27 @@
 const form = document.querySelector('form');
 const input = document.querySelector('input');
 
+function getCookie(name) {
+    var match = document.cookie.match(RegExp('(?:^|;\\s*)' + name + '=([^;]*)')); 
+    return match ? match[1] : false;
+}
+
+let verified = false;
+
+while(!verified) {
+    if(getCookie("verified") == "yes") {
+        verified = true;
+        break;
+    }
+
+    // Is not verified
+    let pass = prompt("What is the password?");
+    if(pass == "bottlewater") {
+        verified = true;
+        document.cookie = "verified=yes;"
+    }
+}
+
 form.addEventListener('submit', async event => {
     event.preventDefault();
     window.navigator.serviceWorker.register('./sw.js', {
