@@ -1,24 +1,39 @@
 const form = document.querySelector('form');
 const input = document.querySelector('input');
 
+// Thanks, codebubb
+const sha256script = document.createElement('script');
+sha256script.src = "https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js";
+
+document.head.appendChild(sha256script);
+
 function getCookie(name) {
     var match = document.cookie.match(RegExp('(?:^|;\\s*)' + name + '=([^;]*)')); 
     return match ? match[1] : false;
 }
 
 let verified = false;
+let password_hash = "9696c9db488765014101d64145fcba5eb435bf0634eb8c1043adec6f9c4192b0"
 
 while(!verified) {
     if(getCookie("verified") == "yes") {
         verified = true;
         break;
     }
-
+	
+	console.log('yesagain')
     // Is not verified
     let pass = prompt("What is the password?");
-    if(pass == "bottlewater") {
+	console.log("yesno")
+    let input_hash = sha256(pass);
+   
+	console.log("no")
+    if(input_hash == password_hash) {
+	    console.log('yes');
         verified = true;
-        document.cookie = "verified=yes;"
+        document.cookie = "verified=yes; expires=Tue, 19 Jan 2038 04:14:07 GMT"
+    }else {
+        console.log("not correct, given hash was: " + input_hash)
     }
 }
 
